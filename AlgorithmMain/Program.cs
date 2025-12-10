@@ -52,11 +52,24 @@ public class Program
         }
     }
 
+    public static void MergeTest()
+    {
+        //int[] nums = [1, 1, 2];
+        int[] nums1 = [1, 2, 3, 0, 0, 0];
+        int[] nums2 = [2, 5, 6];
+        Merge.MergeByLoop(nums1, 3, nums2, 3);
+        foreach (var val in nums1)
+        {
+            Console.Write(val + " ");
+        }
+    }
+
     public static void Main(string[] args)
     {
         //SumOfTwoTest();
         //MoveZeroTest();
         //RemoveElementTest();
-        RemoveDuplicatesTest();
+        //RemoveDuplicatesTest();
+        MergeTest();
     }
 }
