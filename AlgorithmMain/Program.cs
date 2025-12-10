@@ -1,4 +1,5 @@
-﻿using SumOfTwo;
+﻿using MoveZero;
+using SumOfTwo;
 
 namespace AlgorithmMain;
 
@@ -16,8 +17,46 @@ public class Program
         }
     }
 
+    public static void MoveZeroTest()
+    {
+        int[] array = [0, 1, 0, 3, 12];
+
+        //MoveZero.MoveZero.MoveZeroesWithTwoPointer(array);
+        MoveZero.MoveZero.MoveZeroWithLoop(array);
+
+        foreach (var val in array)
+        {
+            Console.Write(val + " ");
+        }
+    }
+
+    public static void RemoveElementTest()
+    {
+        //int[] nums = [3, 2, 2, 3];// val = 3
+        int[] nums = [0, 1, 2, 2, 3, 0, 4, 2];// val = 2
+        RemoveElement.RemoveElementByLoop(nums, 2);
+        foreach (var val in nums)
+        {
+            Console.Write(val + " ");
+        }
+    }
+
+    public static void RemoveDuplicatesTest()
+    {
+        //int[] nums = [1, 1, 2];
+        int[] nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4];
+        RemoveElement.RemoveDuplicateByCorrectLoop(nums);
+        foreach (var val in nums)
+        {
+            Console.Write(val + " ");
+        }
+    }
+
     public static void Main(string[] args)
     {
-        SumOfTwoTest();
+        //SumOfTwoTest();
+        //MoveZeroTest();
+        //RemoveElementTest();
+        RemoveDuplicatesTest();
     }
 }
