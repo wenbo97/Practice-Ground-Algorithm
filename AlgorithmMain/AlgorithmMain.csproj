@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MaxArea\MaxArea.csproj" />
     <ProjectReference Include="..\MoveZero\MoveZero.csproj" />
     <ProjectReference Include="..\SumOfTwo\SumOfTwo.csproj" />
   </ItemGroup>

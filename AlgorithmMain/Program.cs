@@ -1,4 +1,5 @@
-﻿using MoveZero;
+﻿using MaxArea;
+using MoveZero;
 using SumOfTwo;
 
 namespace AlgorithmMain;
@@ -64,12 +65,34 @@ public class Program
         }
     }
 
+    public static void MaxAreaTest()
+    {
+        //int[] nums = [1, 1, 2];
+        int[] nums1 = [1, 8, 6, 2, 5, 4, 8, 3, 7];
+
+        int result = MaxArea.MaxArea.MaxAreaBase(nums1);
+        Console.WriteLine(result);
+    }
+
+
+    public static void LengthOfLongestSubstringTest()
+    {
+        //int[] nums = [1, 1, 2];
+        //string s = "abcabcbb";
+        string s = "pwwkew";
+
+        int result = LengthOfLongestSubstring.LengthOfLongestSubstringBase(s);
+        Console.WriteLine(result);
+    }
+
     public static void Main(string[] args)
     {
         //SumOfTwoTest();
         //MoveZeroTest();
         //RemoveElementTest();
         //RemoveDuplicatesTest();
-        MergeTest();
+        //MergeTest();
+        //MaxAreaTest();
+        LengthOfLongestSubstringTest();
     }
 }
