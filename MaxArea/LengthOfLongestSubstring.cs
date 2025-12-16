@@ -35,18 +35,21 @@ public class LengthOfLongestSubstring
         int slow = 0;
         int fast = 0;
         int maxLen = 0;
+
+        // A set to maintain the valid char sequence
         HashSet<char> set = new HashSet<char>();
         while (fast < s.Length)
         {
-            if (!set.Contains(s[fast]))
+            if (set.Contains(s[fast]))
             {
-                set.Add(s[fast++]);
-                maxLen = Math.Max(maxLen, set.Count);
+                // set.Remove(s[fast]); // Incorrect - s[fast] is not in set.
+                set.Remove(s[slow]);
+                slow++;
             }
             else
             {
-                set.Remove(s[slow]);
-                slow++;
+                set.Add(s[fast++]);
+                maxLen = Math.Max(maxLen, set.Count);
             }
         }
         return maxLen;
