@@ -11,23 +11,25 @@ public class LengthOfLongestSubstring
     /// <returns></returns>
     public static int LengthOfLongestSubstringBase(string s)
     {
-        int len = s.Length;
         int slow = 0;
         int fast = 0;
-        int maxWindow = 0;
-        Dictionary<char, int> map = new();
+        int maxSubLen = 0;
 
-        while (fast < len)
+        Dictionary<char, int> postionMap = new Dictionary<char, int>();
+
+        while (fast < s.Length)
         {
-            if (map.ContainsKey(s[fast]))
-            {
-                slow = Math.Max(slow, map[s[fast]] + 1);
+            char c = s[fast];
+
+            if (postionMap.ContainsKey(c) && postionMap[c] > slow)
+            { 
+                slow = postionMap[c] + 1;
             }
-            map[s[fast]] = fast;
-            maxWindow = Math.Max(maxWindow, fast - slow + 1);
+            postionMap[c] = fast;
+            maxSubLen = Math.Max(maxSubLen, fast - slow + 1);
             fast++;
-        }
-        return maxWindow;
+        } 
+        return maxSubLen;
     }
 
     public static int LengthOfLongestSubstringSet(string s)

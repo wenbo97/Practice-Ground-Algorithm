@@ -1,3 +1,4 @@
+**Map Solution**
 ```csharp
     /// <summary>
     /// pwwkew | abba | abcdef | abcabcbb
@@ -41,7 +42,7 @@
     }
 ```
 
-For hashset:
+**For Hashset:**
 ```csharp
     int slow = 0;
     int fast = 0;
