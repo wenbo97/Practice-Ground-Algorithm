@@ -10,14 +10,29 @@ public class LengthOfLongestSubstringTwoDistinct
         Dictionary<char, int> map = new Dictionary<char, int>();
         while (fast < s.Length)
         {
-            if (!map.ContainsKey(s[fast]))
-            {
-                if (map.Keys.Count < 3)
-                {
-                    map[s[fast]] = map.GetValueOrDefault(s[fast], 0) + 1;
-                }
+            char c = s[fast];
 
+            if (map.ContainsKey(c))
+            {
+                map[c] = map[c] + 1;
             }
+            else
+            {
+                map[c] = 1;
+            }
+
+            while(map.Keys.Count > 2)
+            {
+                map[s[slow]]--;
+                if (map[s[slow]] == 0)
+                {
+                    map.Remove(s[slow]);
+                }
+                slow++;
+            }
+
+            maxLen = Math.Max(maxLen, fast - slow + 1);
+            fast++;
         }
 
         return maxLen;
