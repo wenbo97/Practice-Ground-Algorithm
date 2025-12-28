@@ -1,4 +1,4 @@
-﻿namespace MaxArea;
+﻿namespace MaxArea_SlidingWindow;
 
 public class MaxArea
 {

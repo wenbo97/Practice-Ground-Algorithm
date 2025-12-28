@@ -1,6 +1,6 @@
-﻿using MaxArea;
+﻿using MaxArea_SlidingWindow;
 using MoveZero;
-using SumOfTwo;
+using SortSeries;
 
 namespace AlgorithmMain;
 
@@ -70,7 +70,7 @@ public class Program
         //int[] nums = [1, 1, 2];
         int[] nums1 = [1, 8, 6, 2, 5, 4, 8, 3, 7];
 
-        int result = MaxArea.MaxArea.MaxAreaBase(nums1);
+        int result = MaxArea.MaxAreaBase(nums1);
         Console.WriteLine(result);
     }
 
@@ -85,6 +85,21 @@ public class Program
         Console.WriteLine(result);
     }
 
+    public static void CountNegativeNumbersInASortedMatrix()
+    {
+        //int[] nums = [1, 1, 2];
+        //string s = "abcabcbb";
+        int[][] grid = [
+            [4,3,2,-1],
+            [3,2,1,-1],
+            [1,1,-1,-2],
+            [-1,-1,-2,-3]
+        ];
+
+        int result = CountNegatives.CountNegativesBase(grid);
+        Console.WriteLine(result);
+    }
+
     public static void Main(string[] args)
     {
         //SumOfTwoTest();
@@ -93,6 +108,7 @@ public class Program
         //RemoveDuplicatesTest();
         //MergeTest();
         //MaxAreaTest();
-        LengthOfLongestSubstringTest();
+        //LengthOfLongestSubstringTest();
+        CountNegativeNumbersInASortedMatrix();
     }
 }

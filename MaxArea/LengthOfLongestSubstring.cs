@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MaxArea;
+namespace MaxArea_SlidingWindow;
 
 public class LengthOfLongestSubstring
 {
