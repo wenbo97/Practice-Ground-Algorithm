@@ -1,6 +1,7 @@
 ﻿using MaxArea_SlidingWindow;
 using MoveZero;
 using SortSeries;
+using TwoPointers;
 
 namespace AlgorithmMain;
 
@@ -100,6 +101,13 @@ public class Program
         Console.WriteLine(result);
     }
 
+    public static void RemoveDuplicateIITest()
+    {
+        int[] array = [1, 1, 1, 2, 2, 3];
+        int newLength = RemoveDuplicates.RemoveDuplicatesBase(array);
+        Console.WriteLine(newLength);
+    }
+
     public static void Main(string[] args)
     {
         //SumOfTwoTest();
@@ -109,6 +117,7 @@ public class Program
         //MergeTest();
         //MaxAreaTest();
         //LengthOfLongestSubstringTest();
-        CountNegativeNumbersInASortedMatrix();
+        //CountNegativeNumbersInASortedMatrix();
+        RemoveDuplicateIITest();
     }
 }

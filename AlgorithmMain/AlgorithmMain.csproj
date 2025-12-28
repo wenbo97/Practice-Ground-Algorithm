@@ -12,6 +12,7 @@
     <ProjectReference Include="..\MoveZero\MoveZero.csproj" />
     <ProjectReference Include="..\SortSeries\SortSeries.csproj" />
     <ProjectReference Include="..\SumOfTwo\SumOfTwo.csproj" />
+    <ProjectReference Include="..\TwoPointers\TwoPointers.csproj" />
   </ItemGroup>
 
 </Project>
