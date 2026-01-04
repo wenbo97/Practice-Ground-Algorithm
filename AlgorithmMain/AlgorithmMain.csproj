@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LinearAlgorithm\LinearAlgorithm.csproj" />
     <ProjectReference Include="..\MaxArea\MaxArea_SlidingWindow.csproj" />
     <ProjectReference Include="..\MoveZero\MoveZero.csproj" />
     <ProjectReference Include="..\SortSeries\SortSeries.csproj" />

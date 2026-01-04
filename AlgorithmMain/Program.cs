@@ -1,4 +1,5 @@
-﻿using MaxArea_SlidingWindow;
+﻿using LinearAlgorithm;
+using MaxArea_SlidingWindow;
 using MoveZero;
 using SortSeries;
 using TwoPointers;
@@ -36,7 +37,7 @@ public class Program
     {
         //int[] nums = [3, 2, 2, 3];// val = 3
         int[] nums = [0, 1, 2, 2, 3, 0, 4, 2];// val = 2
-        RemoveElement.RemoveElementByLoop(nums, 2);
+        MoveZero.RemoveElement.RemoveElementByLoop(nums, 2);
         foreach (var val in nums)
         {
             Console.Write(val + " ");
@@ -47,7 +48,7 @@ public class Program
     {
         //int[] nums = [1, 1, 2];
         int[] nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4];
-        RemoveElement.RemoveDuplicateByCorrectLoop(nums);
+        MoveZero.RemoveElement.RemoveDuplicateByCorrectLoop(nums);
         foreach (var val in nums)
         {
             Console.Write(val + " ");
@@ -104,8 +105,22 @@ public class Program
     public static void RemoveDuplicateIITest()
     {
         int[] array = [1, 1, 1, 2, 2, 3];
-        int newLength = RemoveDuplicates.RemoveDuplicatesBase(array);
+        int newLength = LinearAlgorithm.RemoveDuplicates.RemoveDuplicatesBase(array);
         Console.WriteLine(newLength);
+    }
+
+    public static void RotateTest()
+    {
+        int[] array = [1, 2, 3, 4, 5, 6, 7];
+        int k = 3;
+        //RotateArray.Rotate(array, k);
+
+        RotateArray.RotateNoNewArray(array, k);
+        foreach (var ele in array)
+        {
+            Console.Write(ele+"\t");
+        }
+
     }
 
     public static void Main(string[] args)
@@ -118,6 +133,7 @@ public class Program
         //MaxAreaTest();
         //LengthOfLongestSubstringTest();
         //CountNegativeNumbersInASortedMatrix();
-        RemoveDuplicateIITest();
+        //RemoveDuplicateIITest();
+        RotateTest();
     }
 }
