@@ -1,4 +1,5 @@
 ﻿using System.IO.Pipes;
+using System.Text;
 
 namespace ConsoleApp1;
 
@@ -7,12 +8,12 @@ public class Program
     public static async Task Main(string[] args)
     {
         Console.WriteLine("[Client] Start...");
-        using (var client = new NamedPipeClientStream(".", "DemoChannel", PipeDirection.Out))
+        using (var client = new NamedPipeClientStream(".", "DemoChannel", PipeDirection.InOut, PipeOptions.Asynchronous))
         {
             Console.WriteLine("[Client] Connecting to server...");
             try
             {
-                await client.ConnectAsync(5000);
+                await client.ConnectAsync(30 *1000);
             }
             catch (Exception ex)
             {
@@ -21,32 +22,68 @@ public class Program
                 return;
             }
 
-            Console.WriteLine("[Client] Connected! Type something and hit Enter.");
+            //Console.WriteLine("[Client] Performing handshake...");
+            //int serverSignal = client.ReadByte();
+            //client.WriteByte(2);
+            //await client.FlushAsync();
+            //Console.WriteLine($"[Client] Handshake complete (Server Signal: {serverSignal})");
 
-            using (var writer = new StreamWriter(client))
+            var noBomUtf8 = new UTF8Encoding(false);
+
+            var listeningTask = Task.Run(async () =>
             {
-                writer.AutoFlush = true;
-                while (true)
-                {
-                    Console.Write(">");
-                    string? usrInput = Console.ReadLine();
+                using var reader = new StreamReader(client, noBomUtf8, false, 1024, leaveOpen: true);
 
-                    if ("exit".Contains(usrInput, StringComparison.OrdinalIgnoreCase))
+                while (client.IsConnected)
+                {
+                    try
                     {
-                        Console.WriteLine("Shutdown client...");
+                        var line = await reader.ReadLineAsync();
+                        if (!string.IsNullOrEmpty(line))
+                        {
+                            Console.WriteLine($"[Client] {line}");
+                        }
+                    }
+                    catch (Exception)
+                    {
                         break;
                     }
-                    
-                    if (!string.IsNullOrEmpty(usrInput))
+                }
+            });
+
+
+            using StreamWriter writer = new StreamWriter(client, noBomUtf8, 1024, leaveOpen: true)
+            {
+                AutoFlush = true
+            };
+
+            await writer.WriteLineAsync("echo hello");
+            while (true)
+            {
+                Console.Write("> ");
+
+                string? usrInput = Console.ReadLine();
+                if (string.Equals(usrInput, "exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("Shutdown client...");
+                    break;
+                }
+
+                if (!string.IsNullOrEmpty(usrInput))
+                {
+                    try
                     {
                         await writer.WriteLineAsync(usrInput);
                     }
-                    else
+                    catch (IOException)
                     {
-                        Console.WriteLine("Empty command will not send to server.");
+                        Console.WriteLine("[Client] Server disconnected.");
+                        break;
                     }
                 }
+
             }
+
         }
 
         Console.WriteLine("[Client] Client shutdown.");
