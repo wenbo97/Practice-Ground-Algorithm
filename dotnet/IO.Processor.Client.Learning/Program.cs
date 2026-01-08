@@ -1,7 +1,7 @@
 ﻿using System.IO.Pipes;
 using System.Text;
 
-namespace ConsoleApp1;
+namespace IO.Processor.Client.Learning;
 
 public class Program
 {
@@ -29,10 +29,13 @@ public class Program
             //Console.WriteLine($"[Client] Handshake complete (Server Signal: {serverSignal})");
 
             var noBomUtf8 = new UTF8Encoding(false);
-
+            using var reader = new StreamReader(client, noBomUtf8, false, 1024, leaveOpen: true);
+            using StreamWriter writer = new StreamWriter(client, noBomUtf8, 1024, leaveOpen: true)
+            {
+                AutoFlush = true
+            };
             var listeningTask = Task.Run(async () =>
             {
-                using var reader = new StreamReader(client, noBomUtf8, false, 1024, leaveOpen: true);
 
                 while (client.IsConnected)
                 {
@@ -52,10 +55,7 @@ public class Program
             });
 
 
-            using StreamWriter writer = new StreamWriter(client, noBomUtf8, 1024, leaveOpen: true)
-            {
-                AutoFlush = true
-            };
+
 
             await writer.WriteLineAsync("echo hello");
             while (true)
