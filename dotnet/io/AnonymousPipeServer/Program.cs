@@ -33,7 +33,7 @@ public class Program
         Console.WriteLine("[Server] Starting child process...");
         childProcess.Start();
 
-        pipeServer.DisposeLocalCopyOfClientHandle();
+        //pipeServer.DisposeLocalCopyOfClientHandle();
 
         using (var writer = new StreamWriter(pipeServer))
         {
@@ -42,7 +42,9 @@ public class Program
             Console.WriteLine("[Server] sending message...");
 
             writer.WriteLine("[Server] Hello child process, this is server speaking.");
-
+            
+            writer.WriteLine("[Server] This is the second line sent from server side....");
+            writer.Close();
             childProcess.WaitForExit();
         }
 

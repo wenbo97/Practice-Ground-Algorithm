@@ -29,11 +29,16 @@ public class Program
 
             using var reader = new StreamReader(pipeClient);
 
-            string? message = reader.ReadLine();
+            string? message;
 
-            Console.WriteLine($"[Client] Message received from server: {message}");
+            while ((message = reader.ReadLine()) != null)
+            {
+                Console.WriteLine($"[Client] Message received from server: {message}");
+            }
 
-            Task.Delay(TimeSpan.FromSeconds(15));
+            Console.WriteLine("[Client] Server closed the pipe. exiting...");
+
+            // Task.Delay(TimeSpan.FromSeconds(15));
         }
         catch (Exception ex)
         {
