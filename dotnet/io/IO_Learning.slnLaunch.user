@@ -1,0 +1,42 @@
+[
+  {
+    "Name": "StartServerAndClient",
+    "Projects": [
+      {
+        "Path": "IO.Processor.Client.Learning\\IO.Processor.Client.Learning.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "IO.Processor.Server.Learning\\IO.Processor.Server.Learning.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "StartClient",
+    "Projects": [
+      {
+        "Path": "IO.Processor.Client.Learning\\IO.Processor.Client.Learning.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "StartServer",
+    "Projects": [
+      {
+        "Path": "IO.Processor.Server.Learning\\IO.Processor.Server.Learning.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "StartAnonymousServer",
+    "Projects": [
+      {
+        "Path": "AnonymousPipeServer\\AnonymousPipeServer.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

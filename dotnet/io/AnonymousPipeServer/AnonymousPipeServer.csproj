@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+  
+  <Target Name="CopyAnonymousClientExe" AfterTargets="Build">
+    <ItemGroup>
+      <CopyAnonymousClientExe Include="..\builds\AnonymousPipeClient.exe" />
+    </ItemGroup>
+
+    <Copy 
+        SourceFiles="@(CopyAnonymousClientExe)"
+        DestinationFolder="$(OutputPath)"
+        SkipUnchangedFiles="true" />
+  </Target>
+</Project>

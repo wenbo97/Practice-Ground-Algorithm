@@ -95,6 +95,6 @@ public class Program
     public static async Task Main(string[] args)
     {
         // RunUACShell();
-        ShowVerbs("D:\\A_Trainings\\Practice-Ground-Algorithm\\docs\\My Basic of CS\\IO & Networking\\Standard IO Operation\\standard-io-operation.md");
+        //ShowVerbs("D:\\A_Trainings\\Practice-Ground-Algorithm\\docs\\My Basic of CS\\IO & Networking\\Standard IO Operation\\standard-io-operation.md");
     }
 }

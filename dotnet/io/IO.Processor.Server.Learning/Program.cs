@@ -11,6 +11,11 @@ public class Program
 
     public static async Task Main(string[] args)
     {
+        StartSimpleServer();
+    }
+
+    public static async Task StartSimpleServer()
+    {
         Console.WriteLine("[Server] Starting server...");
 
         using (var server = new NamedPipeServerStream(
@@ -43,6 +48,23 @@ public class Program
                 cmdWriter.AutoFlush = true;
 
                 Console.WriteLine("[Server] CMD Session Started.");
+
+                byte[] handShakeBuffer = new byte[] { 1 };
+
+                await server.WriteAsync(handShakeBuffer, 0, 1);
+                await server.FlushAsync();
+
+                byte[] clientAck = new byte[1];
+
+                int clientAckByte = await server.ReadAsync(clientAck, 0, 1);
+
+                if (clientAckByte == 0 || clientAck[0] != 2)
+                {
+                    Console.Error.WriteLine("[Server] Handshake failed. Closing.");
+                    return;
+                }
+
+                Console.WriteLine("[Server] Handshake success. Start processing.");
 
                 using (var reader = new StreamReader(server))
                 {
