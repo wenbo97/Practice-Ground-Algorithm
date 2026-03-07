@@ -1,0 +1,1 @@
+Test-Connection google.com -Count 3 -Verbose

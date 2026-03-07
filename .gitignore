@@ -53,6 +53,13 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
+# IDE
 .vs/
 .idea/
 builds/
+.claude/
+
+# User-specific files
+*.csproj.user
+*.DotSettings.user
+*.slnLaunch.user
