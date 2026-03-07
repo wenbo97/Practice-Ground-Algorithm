@@ -152,23 +152,202 @@ PR with prompt changes
 
 ---
 
-## 4. Tools & Frameworks
+## 4. Tools & Frameworks for Prompt Management
 
-### Comparison
+### 4.1 Category Overview
 
-| Tool | What It Does | Fit for This Use Case |
+Prompt tooling falls into three categories. Most tools span multiple, but each has a primary strength:
+
+```
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│   Organization   │  │    Testing &     │  │  Observability   │
+│   & Versioning   │  │    Evaluation    │  │  & Monitoring    │
+│                  │  │                  │  │                  │
+│  PromptHub       │  │  promptfoo ★     │  │  LangSmith       │
+│  Trellis ★       │  │  Agenta          │  │  Braintrust      │
+│  PromptLayer     │  │  Braintrust      │  │  Agenta          │
+│  Pezzo           │  │  LangSmith       │  │  Pezzo           │
+│                  │  │  PromptHub       │  │                  │
+└─────────────────┘  └─────────────────┘  └─────────────────┘
+                    ★ = recommended for your use case
+```
+
+### 4.2 Detailed Comparison
+
+#### promptfoo — Testing & Eval (Best Fit for Regression Testing)
+
+> [promptfoo.dev](https://www.promptfoo.dev/) | Open Source | CLI + Library
+
+| Feature | Details |
+| --- | --- |
+| **Core** | Test-driven prompt development with declarative test cases |
+| **Assertions** | Configurable — exact match, contains, regex, LLM-as-judge, custom functions |
+| **CI/CD** | GitHub Actions integration; runs entirely locally |
+| **Comparison** | Side-by-side matrix view across prompts, models, and inputs |
+| **Red teaming** | Automated vulnerability scanning for prompt injection, jailbreaks |
+| **Providers** | OpenAI, Anthropic, Azure, Google, HuggingFace, custom APIs |
+| **Cost** | Free, open source, no data leaves your machine |
+| **Scale** | Battle-tested serving 10M+ users in production |
+
+**Why it fits your case**: Define test cases per migration skill in YAML, run as ADO pipeline gate, detect regressions when any prompt changes. Supports snapshot-style testing out of the box.
+
+```yaml
+# Example: test a migration skill
+prompts:
+  - file://skills/project-reference.md
+tests:
+  - vars:
+      input_csproj: file://fixtures/net472-with-refs.csproj
+    assert:
+      - type: contains
+        value: "<TargetFramework>net8.0</TargetFramework>"
+      - type: contains
+        value: "<ProjectReference"
+      - type: not-contains
+        value: "Corext"
+```
+
+---
+
+#### Trellis — Organization & Context Injection (Best Fit for Spec Management)
+
+> [docs.trytrellis.app](https://docs.trytrellis.app/) | Open Source (AGPL-3.0)
+
+| Feature | Details |
+| --- | --- |
+| **Core** | Structured spec management with auto-injection into AI agents |
+| **Specs** | Domain-scoped files in `.trellis/spec/`, routed via JSONL per agent |
+| **Hooks** | SessionStart, PreToolUse, SubagentStop — automate context loading |
+| **Agents** | 6 built-in (dispatch, plan, research, implement, check, debug) |
+| **Verification** | Ralph Loop — programmatic build/lint/test verification with retry |
+| **Platforms** | Claude Code, Cursor, OpenCode, Codex, Kilo, Kiro, Gemini CLI |
+| **Session memory** | Workspace journals for cross-session continuity |
+
+**Why it fits your case**: Replaces your monolithic CLAUDE.md with scoped specs. Each skill only gets the context it needs via JSONL routing. (See [Section 5](#5-trellis-framework-analysis) for deep dive.)
+
+---
+
+#### PromptHub — Versioning & Collaboration (Best for Team Prompt Management)
+
+> [prompthub.us](https://www.prompthub.us/) | SaaS
+
+| Feature | Details |
+| --- | --- |
+| **Core** | Git-style prompt versioning with branches, diffs, merge requests |
+| **Testing** | Playground, batch testing, side-by-side model comparison |
+| **CI/CD Pipelines** | Runs evals on every commit/merge — detects secret leaks, regressions |
+| **Collaboration** | Activity streams, fork/star system, team workspaces |
+| **Deploy** | API to retrieve latest prompt from any branch at runtime |
+| **Providers** | OpenAI, Anthropic, Azure, Google, Meta, AWS Bedrock, Mistral |
+
+**Why it could fit**: If your team wants a visual dashboard for prompt editing with built-in PR-style review flow. The pipeline feature (eval on every commit) directly addresses your regression concern.
+
+---
+
+#### Agenta — Eval Platform with Prompt Management
+
+> [github.com/Agenta-AI/agenta](https://github.com/Agenta-AI/agenta) | Open Source (MIT)
+
+| Feature | Details |
+| --- | --- |
+| **Core** | LLMOps platform — prompt playground + evaluation + observability |
+| **Eval** | 20+ built-in evaluators, LLM-as-judge, custom evaluators, human feedback |
+| **Playground** | Side-by-side prompt comparison against test cases |
+| **Versioning** | Full versioning with branching and environment management |
+| **Observability** | OpenTelemetry-based tracing, cost/latency monitoring |
+| **Deploy** | Self-hosted (Docker) or cloud |
+
+**Why it could fit**: Strong eval capabilities. Good if you want both prompt management and structured evaluation in one tool. MIT licensed.
+
+---
+
+#### LangSmith — Full Lifecycle Platform
+
+> [docs.langchain.com/langsmith](https://docs.langchain.com/langsmith) | SaaS (free tier available)
+
+| Feature | Details |
+| --- | --- |
+| **Core** | Framework-agnostic platform for developing, debugging, deploying LLM apps |
+| **Tracing** | Step-by-step visibility into every LLM call and agent action |
+| **Eval** | Systematic evaluation with quality tracking over time |
+| **Prompts** | Built-in versioning and collaboration |
+| **Deploy** | Agent Server deployment for production |
+| **Compliance** | HIPAA, SOC 2 Type 2, GDPR |
+
+**Why it could fit**: Best if you're also building LangChain-based applications. Overkill if you only need prompt management for Claude Code skills.
+
+---
+
+#### Pezzo — Self-Hosted LLMOps
+
+> [github.com/pezzolabs/pezzo](https://github.com/pezzolabs/pezzo) | Open Source (Apache 2.0)
+
+| Feature | Details |
+| --- | --- |
+| **Core** | Cloud-native LLMOps — prompt management + observability + caching |
+| **Prompt mgmt** | Centralized editing, instant delivery without redeployment |
+| **Observability** | Real-time monitoring, request logging, analytics |
+| **Caching** | Built-in caching for cost reduction (claims up to 90% savings) |
+| **Deploy** | Self-hosted via Docker Compose (PostgreSQL + ClickHouse + Redis) |
+
+**Why it could fit**: Good if you want a fully self-hosted solution within your internal network. Less focused on testing/eval than promptfoo.
+
+---
+
+#### Braintrust — Eval & Observability
+
+> [braintrust.dev](https://www.braintrust.dev/) | SaaS + Open Source components
+
+| Feature | Details |
+| --- | --- |
+| **Core** | LLM eval, logging, and scoring platform |
+| **Eval** | Structured experiments with scoring functions |
+| **Logging** | Production request logging with quality tracking |
+| **Prompts** | Prompt playground and management |
+| **CI** | Integrates into CI pipelines for automated eval |
+
+**Why it could fit**: Strong eval + observability combo. Good for tracking prompt quality trends over time.
+
+---
+
+### 4.3 Decision Matrix for Your Use Case
+
+| Need | Best Tool | Runner-Up |
 | --- | --- | --- |
-| **[promptfoo](https://github.com/promptfoo/promptfoo)** | Prompt testing & eval framework | Define test cases per skill, run evals on PR, detect regressions |
-| **[Trellis](https://docs.trytrellis.app)** | Spec/context management, multi-platform AI framework | Organize specs, context injection, agent pipeline |
-| **[Braintrust](https://www.braintrust.dev/)** | LLM eval & observability | Logging, scoring, tracking prompt quality over time |
-| **Custom snapshot tests** | Golden-file comparison | Most practical for migration output validation |
-| **ESLint-style rules** | Static analysis on prompt files | Catch structural issues before runtime |
+| **Prompt regression testing (PR gate)** | promptfoo | PromptHub (pipelines) |
+| **Spec organization & context injection** | Trellis | Custom file structure |
+| **Git-style prompt versioning with UI** | PromptHub | Agenta |
+| **LLM-as-judge evaluation** | promptfoo | Agenta |
+| **Production observability** | LangSmith | Braintrust |
+| **Self-hosted, internal network** | Pezzo / Agenta | Custom solution |
+| **Side-by-side prompt comparison** | Agenta | PromptHub |
+| **Cost tracking** | LangSmith / Pezzo | Braintrust |
 
-### Recommended Combination
+### 4.4 Recommended Stack for Your Plugin
 
-- **Trellis** → Prompt organization + context injection + agent pipeline
-- **promptfoo** (or custom) → Testing + regression detection as PR gate
-- **Custom orchestration** → Your `Run-Loop.ps1` + deterministic pre-processing
+```
+┌─────────────────────────────────────────────────┐
+│  Layer 1: Prompt Organization                    │
+│  Trellis (.trellis/spec/ + JSONL routing)        │
+│  — or custom file structure with assembler —     │
+├─────────────────────────────────────────────────┤
+│  Layer 2: Testing & Regression Detection         │
+│  promptfoo (YAML test cases, CI gate in ADO)     │
+├─────────────────────────────────────────────────┤
+│  Layer 3: Orchestration                          │
+│  Run-Loop.ps1 + MCP tools (deterministic logic)  │
+├─────────────────────────────────────────────────┤
+│  Layer 4: Execution                              │
+│  claude -p (unchanged)                           │
+└─────────────────────────────────────────────────┘
+```
+
+**Why this combination**:
+
+- **Trellis** handles what you struggle with most today — organizing 30k words into scoped, auto-injected specs
+- **promptfoo** directly solves the "did this change break something?" problem with CI-integrated eval
+- **Keep your Run-Loop.ps1** — it works, and the hybrid approach (Section 6) incrementally improves it
+- **No need for heavy platforms** like LangSmith or Pezzo unless you later need production observability
 
 ---
 
